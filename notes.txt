@@ -1,0 +1,4 @@
+0. Added Shadcn ui
+1. Added clerk: follwed instruction from the documentation
+2. Added dialog from Shadcn
+3. Add library called zustand(npm install zustand)
