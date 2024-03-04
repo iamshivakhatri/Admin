@@ -2,3 +2,14 @@
 1. Added clerk: follwed instruction from the documentation
 2. Added dialog from Shadcn
 3. Add library called zustand(npm install zustand)
+4. Add library called form from shadcn ui
+5. Add input from shadcn
+6. Add prisma  npm i -D prisma
+7. npm  i @prisma/client
+8. npx prisma init 
+9. Signup for planetscale
+10. Created the database and connected with prisma
+npx prisma init
+npx prisma generate
+npx prisma db push
+11. Added axios : npm i axios

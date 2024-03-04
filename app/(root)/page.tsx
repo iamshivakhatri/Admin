@@ -15,7 +15,6 @@ const SetupPage = () => {
     if (!isOpen){
       onOpen();
     }
-    console.log("I am printing");
   }
   ,[isOpen, onOpen]);
 
