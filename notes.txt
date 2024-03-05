@@ -15,3 +15,5 @@ npx prisma db push
 11. Added axios : npm i axios
 12. Added react hot toast : npm i react-hot-toast
 13. to reset the database :npx prisma migrate reset
+14. Added popover
+15. Added command
