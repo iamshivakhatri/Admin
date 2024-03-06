@@ -65,7 +65,7 @@ export default function StoreSwitcher({
             aria-label="select a store"
             className={cn("w-[200px] justify-between", className)}
             >
-                Current Store
+                {currentStore?.label || "Select Store"}
                 <ChevronsUpDown className="ML-AUTO H-4 shrink-0 opacity-50"/>
                 <StoreIcon className="mr-2 h-4 ww-4"size={24} />
             </Button>
