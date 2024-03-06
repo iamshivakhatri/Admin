@@ -21,6 +21,8 @@ export function MainNav({
             active: pathname === `/${params.storeId}/settings`
         }
     ]
+    console.log("This is the pathname", pathname);
+    console.log("This is the params", params);
     return(
         <nav
         className={cn("flex itemss-center space-x-4 lg:space-x-4", className)}
@@ -39,6 +41,7 @@ export function MainNav({
             >
                     {route.label}
             </Link>
+            
 
             
             ))}
