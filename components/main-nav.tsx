@@ -16,10 +16,17 @@ export function MainNav({
 
     const routes = [ 
         {
+            href: `/${params.storeId}/`,
+            label: 'Home',
+            active: pathname === `/${params.storeId}/`
+        },
+        {
             href: `/${params.storeId}/settings`,
             label: 'Settings',
             active: pathname === `/${params.storeId}/settings`
         }
+
+       
     ]
     console.log("This is the pathname", pathname);
     console.log("This is the params", params);

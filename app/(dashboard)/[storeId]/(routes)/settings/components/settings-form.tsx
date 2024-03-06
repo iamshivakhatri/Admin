@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
+import { AlertModal } from "@/components/modals/alert-modal";
+
 
 
 // Access the Store type from PrismaClient
@@ -58,8 +60,36 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
         }
     }
 
+    const onDelete = async ()=>{
+        try{
+            console.log("This is printing from ondelete function");
+
+
+            setLoading(true);
+            await axios.delete(`/api/stores/${params.storeId}`);
+            router.refresh();
+            router.push("/");
+            toast.success('Store deleted successfully');
+        }catch(error){
+            toast.error('Failed to delete store');
+            console.error('[SETTINGS_DELETE]', error);
+
+
+        }finally{
+            setLoading(false);
+        
+        }
+
+    }
+
     return (
         <>
+        <AlertModal 
+        isOpen={open}
+        onClose={()=> setOpen(false)}
+        onConfirm={onDelete}
+        loading={loading}
+         />
         
         <div className='flex items-center justify-between'>
             <Heading
@@ -71,6 +101,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
             disabled={loading}
             variant = "destructive"
             size="icon"  
+            onClick={()=> setOpen(true)}
             >
                 <Trash className="h-4 w-4"/>
 

@@ -46,7 +46,7 @@ import {auth} from '@clerk/nextjs';
 
   export async function DELETE(
     req: Request,
-    {params} : {params: {storeId: string}}
+    {params} : {params: {storeid: string}} // case of storeid matters here. 
    ){
      try{
          const {userId} = auth();
@@ -57,13 +57,13 @@ import {auth} from '@clerk/nextjs';
          }
        
  
-         if(!params.storeId){
+         if(!params.storeid){
              return new NextResponse("Store ID is required", {status: 400});
          }
  
       const store = await prismadb.store.deleteMany({
          where :{
-             id: params.storeId,
+             id: params.storeid,
              userId
          },
      })
