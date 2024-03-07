@@ -15,6 +15,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/modals/alert-modal";
+import { ApiAlert } from "@/components/ui/api-alert";
 
 
 
@@ -135,9 +136,18 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
         
             </form>
         </Form>
-
-
+        <Separator className="w-full"/>
+        <ApiAlert 
+         title="test"
+         description="test-desc"
+         variant="public"
+         
+         
+         />
 
         </>
+
+
+
     );
 };
