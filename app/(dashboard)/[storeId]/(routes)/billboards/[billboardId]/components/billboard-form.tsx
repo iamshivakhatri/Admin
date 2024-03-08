@@ -17,23 +17,26 @@ import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { ApiAlert } from "@/components/ui/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
+import { Billboard } from "@prisma/client";
+
 
 
 
 // Access the Store type from PrismaClient
-type Store = PrismaClient['Store'];
 
-interface SettingsFormProps {
-    initialData: Store;
+
+interface BillboardFormProps {
+    initialData: Billboard | null;
 }
 
 const formSchema = z.object({
-    name: z.string().min(1),
+    label: z.string().min(1),
+    imageUrl: z.string().min(1),
 });
 
-type SettingsFormValues = z.infer<typeof formSchema>;
+type BillboardFormValues = z.infer<typeof formSchema>;
 
-export const SettingsForm = ({ initialData }: SettingsFormProps) => {
+export const BillboardForm = ({ initialData }: BillboardFormProps) => {
     const params = useParams();
     const router = useRouter();
     const origin = useOrigin();
@@ -42,12 +45,25 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const form = useForm<SettingsFormValues>({
+    const title = initialData ? "Edit Billboard" : "Create Billboard";
+
+    const description = initialData ? "Edit Billboard" : "Add a new billboard";
+
+
+    const toastMessage = initialData ? "Billboard Updated" : "Billboard Created";
+
+    const action = initialData ? "Save Changes" : "Create";
+
+
+    const form = useForm<BillboardFormValues>({
         resolver: zodResolver(formSchema),
-        defaultValues: initialData
+        defaultValues: initialData||{
+            label:'',
+            imageUrl:'',
+        }
     });
     
-    const onSubmit = async (data: SettingsFormValues) => {
+    const onSubmit = async (data: BillboardFormValues) => {
         // update store
         try {
             setLoading(true);
@@ -96,10 +112,10 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
         
         <div className='flex items-center justify-between'>
             <Heading
-            title="Settings"
-            description="Manage store preferences"
+            title={title}
+            description={description}
             />
-
+        {initialData && (
             <Button 
             disabled={loading}
             variant = "destructive"
@@ -108,7 +124,10 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
             >
                 <Trash className="h-4 w-4"/>
 
-            </Button>
+            </Button>   
+        
+        )}
+            
             
         </div>
 
@@ -119,12 +138,12 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
             <div className="grid grid-cols-3 gap-8">
                 <FormField
                 control={form.control}
-                name="name"
+                name="label"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel> Name</FormLabel>
+                        <FormLabel> Label</FormLabel>
                         <FormControl>  
-                        <Input disabled = {loading} {...field} type="text" placeholder="Name" className="w-full"/>
+                        <Input disabled = {loading} {...field} type="text" placeholder="Billboard Label" className="w-full"/>
                         </FormControl>                        
                         <FormMessage/>
                     </FormItem>
@@ -133,17 +152,13 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
 
             </div>
             <Button disabled={loading} type="submit">
-                Save Changes
+                {action}
             </Button>
         
             </form>
         </Form>
         <Separator className="w-full"/>
-        <ApiAlert 
-         title="NEXT_PUBLIC_API_URL"
-         description={`${origin}/api/${params.storeId}`}
-         variant="public"
-         />
+        
 
         </>
 
