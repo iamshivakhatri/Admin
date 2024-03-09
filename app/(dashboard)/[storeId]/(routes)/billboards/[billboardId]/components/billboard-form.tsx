@@ -15,9 +15,8 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/modals/alert-modal";
-import { ApiAlert } from "@/components/ui/api-alert";
-import { useOrigin } from "@/hooks/use-origin";
 import { Billboard } from "@prisma/client";
+import ImageUpload from "@/components/ui/image-upload";
 
 
 
@@ -39,7 +38,7 @@ type BillboardFormValues = z.infer<typeof formSchema>;
 export const BillboardForm = ({ initialData }: BillboardFormProps) => {
     const params = useParams();
     const router = useRouter();
-    const origin = useOrigin();
+
 
 
     const [open, setOpen] = useState(false);
@@ -67,13 +66,20 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
         // update store
         try {
             setLoading(true);
+            if(initialData){
+                await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`,data );
+            }else{
             console.log('values', data);
-            await axios.patch(`/api/stores/${params.storeId}`,data );
+            await axios.post(`/api/${params.storeId}/billboards`,data );
+            }
+            
             router.refresh();
-            toast.success('Store updated successfully');
+            router.push(`/${params.storeId}/billboards`)
+            toast.success(toastMessage);
         } catch (error) {
-            toast.error('Failed to update store');
-            console.error('[SETTINGS_FORM]', error);
+            
+            toast.error('Failed to update billboard');
+            console.error('[BILLBOARD_FORM]', error);
         } finally {
             setLoading(false);
         }
@@ -85,13 +91,13 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
 
 
             setLoading(true);
-            await axios.delete(`/api/stores/${params.storeId}`);
+            await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
             router.refresh();
             router.push("/");
-            toast.success('Store deleted successfully');
+            toast.success('Billboard deleted successfully');
         }catch(error){
-            toast.error('Failed to delete store');
-            console.error('[SETTINGS_DELETE]', error);
+            toast.error('Make sure you remove all categories using this billboard first');
+            console.error('[BILLBOARD_DELETE]', error);
 
 
         }finally{
@@ -135,6 +141,26 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
 
         <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmit)}  className="space-y-8 w-full">
+            <FormField
+                control={form.control}
+                name="imageUrl"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel> Backgound Image</FormLabel>
+                        <FormControl>  
+                        <ImageUpload 
+                        value={field.value? [field.value]: []}
+                        disabled={loading}
+                        onChange={(url)=> field.onChange(url)}
+                        onRemove={()=> field.onChange('')}
+
+                        />
+                        </FormControl>                        
+                        <FormMessage/>
+                    </FormItem>
+                )}
+                />
+
             <div className="grid grid-cols-3 gap-8">
                 <FormField
                 control={form.control}
@@ -143,7 +169,7 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
                     <FormItem>
                         <FormLabel> Label</FormLabel>
                         <FormControl>  
-                        <Input disabled = {loading} {...field} type="text" placeholder="Billboard Label" className="w-full"/>
+                        <Input disabled = {loading} placeholder="Billboard Label" className="w-full" {...field}/>
                         </FormControl>                        
                         <FormMessage/>
                     </FormItem>

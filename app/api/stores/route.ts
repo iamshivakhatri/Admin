@@ -30,7 +30,7 @@ req: Request,
         });
         console.log("This is store", store);
 
-        return new NextResponse(store, { status: 201 });
+        return new NextResponse(JSON.stringify(store), { status: 201 });
    
 
     }catch(error){

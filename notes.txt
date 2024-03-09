@@ -17,3 +17,5 @@ npx prisma db push
 13. to reset the database :npx prisma migrate reset
 14. Added popover
 15. Added command
+npm install next-cloudinary
+
