@@ -18,4 +18,5 @@ npx prisma db push
 14. Added popover
 15. Added command
 npm install next-cloudinary
-
+npx shadcn-ui@latest add table
+npm install @tanstack/react-table
