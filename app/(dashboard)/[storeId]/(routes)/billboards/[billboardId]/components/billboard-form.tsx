@@ -73,8 +73,9 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
             await axios.post(`/api/${params.storeId}/billboards`,data );
             }
             
-            router.refresh();
+            
             router.push(`/${params.storeId}/billboards`)
+            router.refresh();
             toast.success(toastMessage);
         } catch (error) {
             
@@ -87,13 +88,14 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
 
     const onDelete = async ()=>{
         try{
-            console.log("This is printing from ondelete function");
+     
 
 
             setLoading(true);
             await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+            
+            router.push(`/${params.storeId}/billboards`);
             router.refresh();
-            router.push("/");
             toast.success('Billboard deleted successfully');
         }catch(error){
             toast.error('Make sure you remove all categories using this billboard first');
@@ -102,6 +104,7 @@ export const BillboardForm = ({ initialData }: BillboardFormProps) => {
 
         }finally{
             setLoading(false);
+            setOpen(false);
         
         }
 

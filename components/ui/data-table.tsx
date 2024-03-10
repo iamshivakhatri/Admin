@@ -1,7 +1,8 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useState } from "react"    
+import { useState } from "react"   
+import { useRouter } from "next/navigation" 
 
 
 import {
@@ -24,6 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import router from "next/router"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -36,6 +38,7 @@ export function DataTable<TData, TValue>({
   data,
   searchKey
 }: DataTableProps<TData, TValue>) {
+    
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []
       )
