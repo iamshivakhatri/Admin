@@ -1,7 +1,7 @@
 "use client";
 
 import * as z from "zod";
-import { PrismaClient } from '@prisma/client';
+import { Billboard, PrismaClient } from '@prisma/client';
 import { Heading } from '@/components/ui/heading';
 import { Button } from '@/components/ui/button';
 import { Trash } from 'lucide-react';
@@ -17,6 +17,7 @@ import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { Category } from "@prisma/client";
 import ImageUpload from "@/components/ui/image-upload";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 
 
@@ -26,6 +27,7 @@ import ImageUpload from "@/components/ui/image-upload";
 
 interface CategoryFormProps {
     initialData: Category | null;
+    billboards: Billboard[];
 }
 
 const formSchema = z.object({
@@ -35,7 +37,7 @@ const formSchema = z.object({
 
 type CategoryFormValues = z.infer<typeof formSchema>;
 
-export const CategoryForm = ({ initialData }: CategoryFormProps) => {
+export const CategoryForm = ({ initialData, billboards }: CategoryFormProps) => {
     const params = useParams();
     const router = useRouter();
 
@@ -98,7 +100,7 @@ export const CategoryForm = ({ initialData }: CategoryFormProps) => {
             router.refresh();
             toast.success('Category deleted successfully');
         }catch(error){
-            toast.error('Make sure you remove all categories using this category first');
+            toast.error('Make sure you remove all products using this category first');
             console.error('[CATEGORY_DELETE]', error);
 
 
@@ -163,13 +165,30 @@ export const CategoryForm = ({ initialData }: CategoryFormProps) => {
 
             <FormField
                 control={form.control}
-                name="name"
+                name="billboardId"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel> Label</FormLabel>
-                        <FormControl>  
-                        <Input disabled = {loading} placeholder="Category name" className="w-full" {...field}/>
-                        </FormControl>                        
+                        <FormLabel> Billboard</FormLabel>
+                        <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                            <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue defaultValue={field.value} placeholder="Select a billboard"/>
+
+                                </SelectTrigger>
+
+                            </FormControl>
+                            <SelectContent>
+                                {billboards.map((billboard)=>(
+                                   <SelectItem key={billboard.id} value={billboard.id}>
+                                       {billboard.label}
+                                      </SelectItem>
+                                    
+                                ))}
+                            </SelectContent>
+
+
+                        </Select>
+                                             
                         <FormMessage/>
                     </FormItem>
                 )}

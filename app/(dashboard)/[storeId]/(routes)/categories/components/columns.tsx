@@ -21,13 +21,14 @@ export const columns: ColumnDef<CategoryColumn>[] = [
     header: "Billboard",
     cell: ({row})=> row.original.billboardLabel
   },
-  {
-    id: "actions",
-    cell: ({ row }) => <CellAction data = {row.original}/>
-  },
+  
   {
     accessorKey: "createdAt",
     header: "Date",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <CellAction data = {row.original}/>
   },
 
 ]

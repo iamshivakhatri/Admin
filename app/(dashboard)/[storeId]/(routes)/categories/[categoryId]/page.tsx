@@ -1,7 +1,7 @@
 import prismadb from '@/lib/prismadb';
 import {CategoryForm} from './components/category-form';
 
-const CategoryPage = async ({ params }: { params: { categoryId: string } }) => {
+const CategoryPage = async ({ params }: { params: { categoryId: string, storeId: string } }) => {
     // Check if billboardId is 'new', handle creation of new billboard
 
     
@@ -14,12 +14,19 @@ const CategoryPage = async ({ params }: { params: { categoryId: string } }) => {
         }
     });
 
+    const billboards = await prismadb.billboard.findMany({
+        where:{
+            storeId: params.storeId,
+
+        }
+    })
+
 
     // Render existing billboard
     return (
         <div className='flex-col'>
             <div className='flex-1 space-y-4 p-8 pt-6'> 
-                <CategoryForm initialData={category}/> 
+                <CategoryForm billboards={billboards} initialData={category}/> 
             </div> 
             
         </div>
