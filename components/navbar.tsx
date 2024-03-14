@@ -22,7 +22,7 @@ const Navbar = async() => {
                 <StoreSwitcher items={stores}/>
                 <MainNav className="mx-6"/>
              <div>
-                This will be routes
+           
              </div>
              <div className="ml-auto flex items-center space-x-4">
                 <UserButton afterSignOutUrl="/"/>

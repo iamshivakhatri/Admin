@@ -18,6 +18,8 @@ const SetupPage = () => {
   }
   ,[isOpen, onOpen]);
 
+
+  // we can actually return null here
   return (
     <div className="p-4">
       Root page

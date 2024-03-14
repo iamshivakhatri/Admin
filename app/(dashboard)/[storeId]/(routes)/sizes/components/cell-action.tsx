@@ -1,6 +1,6 @@
 "use client";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import {  CategoryColumn } from "./columns";
+import { SizeColumn } from "./columns";
 import { Button } from "@/components/ui/button";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -12,7 +12,7 @@ import { AlertModal } from "@/components/modals/alert-modal";
 
 
 interface CellActionProps {
-    data: CategoryColumn;
+    data: SizeColumn;
    
 }
 
@@ -25,7 +25,7 @@ export const CellAction:React.FC<CellActionProps> = ({data})=>{
 
     const onCopy = (id:string)=>{
         navigator.clipboard.writeText(id);
-        toast.success('Category id Copied to clipboard.');
+        toast.success('Size Id Copied to clipboard.');
 
     };
 
@@ -35,13 +35,13 @@ export const CellAction:React.FC<CellActionProps> = ({data})=>{
 
 
             setLoading(true);
-            await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
+            await axios.delete(`/api/${params.storeId}/Sizes/${data.id}`);
             router.refresh();
             
-            toast.success('Category deleted successfully');
+            toast.success('Size deleted successfully');
         }catch(error){
-            toast.error('Make sure you remove all categories using this categories first');
-            console.error('[CATEGORY_DELETE]', error);
+            toast.error('Make sure you remove all categories using this Size first');
+            console.error('[Size_DELETE]', error);
 
 
         }finally{
@@ -78,7 +78,7 @@ export const CellAction:React.FC<CellActionProps> = ({data})=>{
                     <Copy className="h-4 w-4 mr-2"/>
                     Copy Id
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={()=> router.push(`/${params.storeId}/categories/${data.id}`)}>
+                <DropdownMenuItem onClick={()=> router.push(`/${params.storeId}/sizes/${data.id}`)}>
                     <Edit className="h-4 w-4 mr-2"/>
                     Update
                 </DropdownMenuItem>

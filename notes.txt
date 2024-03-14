@@ -21,3 +21,8 @@ npm install next-cloudinary
 npx shadcn-ui@latest add table
 npm install @tanstack/react-table
 npx shadcn-ui@latest add dropdown-menu
+
+Firs the program goes to layout.tsx which renders it children which is the layout of the root folder and in root folder if there is a store then it will directly redirect to /storeid
+otherwise it would have rendered the children. rendering children here means loading the page.tsx.
+
+1.57
