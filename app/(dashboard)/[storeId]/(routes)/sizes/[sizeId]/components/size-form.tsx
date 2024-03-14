@@ -98,8 +98,8 @@ export const SizeForm = ({ initialData }: SizeFormProps) => {
             router.refresh();
             toast.success('Size deleted successfully');
         }catch(error){
-            toast.error('Make sure you remove all categories using this Size first');
-            console.error('[Size_DELETE]', error);
+            toast.error('Make sure you remove all categories using this size first');
+            console.error('[SIZE_DELETE]', error);
 
 
         }finally{
