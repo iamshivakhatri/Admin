@@ -36,7 +36,7 @@ data
         <Separator className="my-4" />
         <DataTable searchKey="label" columns={columns} data={data}/>
         <Heading title="API" description="API calls for Products"/>
-        <ApiList entityIdName="ProductId" entityName="Products"/>
+        <ApiList entityIdName="productId" entityName="products"/>
 
 
         </>
