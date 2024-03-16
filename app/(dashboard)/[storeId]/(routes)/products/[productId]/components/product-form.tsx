@@ -1,14 +1,13 @@
 "use client";
 
 import * as z from "zod";
-import { PrismaClient } from '@prisma/client';
 import { Heading } from '@/components/ui/heading';
 import { Button } from '@/components/ui/button';
 import { Trash } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, FormControl, FormDescription, FormField , FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "react-hot-toast";
@@ -19,6 +18,7 @@ import { Product, Image, Category, Color, Size } from "@prisma/client";
 import ImageUpload from "@/components/ui/image-upload";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { set } from "date-fns";
 
 
 
@@ -49,6 +49,7 @@ const formSchema = z.object({
 type ProductFormValues = z.infer<typeof formSchema>;
 
 export const ProductForm = ({ initialData, categories, colors, sizes }: ProductFormProps) => {
+    const [imageUrls, setImageUrls] = useState<string[]>([]);
     const params = useParams();
     const router = useRouter();
 
@@ -56,6 +57,12 @@ export const ProductForm = ({ initialData, categories, colors, sizes }: ProductF
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (initialData && initialData.images) {
+            setImageUrls(initialData.images.map(image => image.url));
+        }
+    }, [initialData]);
 
     const title = initialData ? "Edit Product" : "Create Product";
 
@@ -89,10 +96,14 @@ export const ProductForm = ({ initialData, categories, colors, sizes }: ProductF
         // update store
         try {
             setLoading(true);
+            const formDataWithImages = {
+                ...data,
+                images: imageUrls.map(url => ({ url }))
+            };
             if(initialData){
-                await axios.patch(`/api/${params.storeId}/products/${params.productId}`,data );
+                await axios.patch(`/api/${params.storeId}/products/${params.productId}`,formDataWithImages );
             }else{
-            console.log('values', data);
+            console.log('This is the data to be uploaded values');
             await axios.post(`/api/${params.storeId}/products`,data );
             }
             
@@ -175,12 +186,23 @@ export const ProductForm = ({ initialData, categories, colors, sizes }: ProductF
                         <FormLabel> Images</FormLabel>
                         <FormControl>  
                         <ImageUpload 
-                        value={field.value.map((image) => image.url)}
                         disabled={loading}
-                        onChange={(url)=> field.onChange([...field.value, {url}])}
-                        onRemove={(url)=> field.onChange([...field.value.filter((current) => current.url !== url)])}
+                        onChange={(url) => {
+                            // Add the new URL to the imageUrls array
+                            setImageUrls((prevUrls) => [...prevUrls, url]);
+                            // Call onChange with the updated array
+                            field.onChange([...field.value, {url}]);
+                        }}
+                        onRemove={(url) => {
+                            // Remove the URL from the imageUrls array
+                            setImageUrls((prevUrls) => prevUrls.filter((imageUrl) => imageUrl !== url));
+                            // Call onChange with the updated array
+                            field.onChange([...field.value.filter((current) => current.url !== url)]);
+                        }}
+                        value={imageUrls? imageUrls: []}
 
-                        />
+                    />
+              
                         </FormControl>                        
                         <FormMessage/>
                     </FormItem>
