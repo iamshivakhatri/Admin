@@ -25,7 +25,7 @@ export const CellAction:React.FC<CellActionProps> = ({data})=>{
 
     const onCopy = (id:string)=>{
         navigator.clipboard.writeText(id);
-        toast.success('Id Copied to clipboard.');
+        toast.success('Product Id Copied to clipboard.');
 
     };
 
@@ -40,7 +40,7 @@ export const CellAction:React.FC<CellActionProps> = ({data})=>{
             
             toast.success('Product deleted successfully');
         }catch(error){
-            toast.error('Make sure you remove all categories using this Product first');
+            toast.error('Something went wrong');
             console.error('[Product_DELETE]', error);
 
 
