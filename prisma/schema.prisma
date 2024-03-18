@@ -145,10 +145,6 @@ model OrderItem{
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   productId String
   product Product @relation(fields: [productId], references: [id])
-  quantity Int
-  price Decimal
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   @@index([orderId])
   @@index([productId])

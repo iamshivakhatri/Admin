@@ -72,7 +72,7 @@ export async function GET(
     
             }
     
-            const colors = await prismadb.size.findMany({
+            const colors = await prismadb.color.findMany({
                 where: {
                    
                     storeId: params.storeId

@@ -26,3 +26,5 @@ Firs the program goes to layout.tsx which renders it children which is the layou
 otherwise it would have rendered the children. rendering children here means loading the page.tsx.
 
 1.57
+
+(base) shivakhatri@Shivas-Air admin % npm install @stripe/stripe-js
